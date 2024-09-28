@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.jsx
+import React, { Component } from "react";
+import CounterDisplay from "./components/CounterDisplay";
+import CounterButtons from "./components/CounterButtons";
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0,
+      backgroundColor: "#f0f0f0", // Initial background color
+    };
+  }
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  // Method to generate random color
+  generateRandomColor = () => {
+    const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    return randomColor;
+  };
+
+  increment = () => {
+    this.setState({
+      count: this.state.count + 1,
+      backgroundColor: this.generateRandomColor(),
+    });
+  };
+
+  decrement = () => {
+    this.setState({
+      count: this.state.count > 0 ? this.state.count - 1 : 0,
+      backgroundColor: this.generateRandomColor(),
+    });
+  };
+
+  reset = () => {
+    this.setState({
+      count: 0,
+      backgroundColor: this.generateRandomColor(),
+    });
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <h1 className="title">CountUp</h1>
+        <div className="card" style={{ backgroundColor: this.state.backgroundColor }}>
+          <CounterDisplay count={this.state.count} />
+          <CounterButtons
+            increment={this.increment}
+            decrement={this.decrement}
+            reset={this.reset}
+          />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
+  }
 }
 
-export default App
+export default App;
